@@ -19,10 +19,14 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     # rd == remote diretcory full path should be used
     # rf == remote file if you want to move only one file
     # ld == local directory, full path should be used
-    print rd
+
 
     # The full file path is the directory plus file.
-    remote = os.path.join(rd, rf)
+    # But if we dont wnat a file but the whole directory then we need to use a "/" int he config file and then ignore it
+    if not rf == "/":
+        remote = os.path.join(rd, rf)
+    else:
+        remote = rd
     print remote
     # escape all characters in the full file path
     remote = re.escape(remote)
@@ -33,7 +37,11 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     print remote
 
     # define the desired full path of the new file
-    local = os.path.join(ld, rf)
+    # Again caught out by the behaviour of the "/" in os.path.join
+    if not rf == "/":
+        local = os.path.join(ld, rf)
+    else:
+        local = ld
 
     # This statement will provide the contaioning directory of the file
     # this is usefull in case the file passed as rf contains a directory
@@ -58,7 +66,7 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     # Without this, if the directory did not exist, rsync would fail.
     # If the directory exists, then the mkdir command does nothing.
     # If you are copying the file to the remote directory, the mkdir command can be passed by ssh
-    mkdir_cmd = '/bin/mkdir -p %s' % localdir
+    #mkdir_cmd = '/bin/mkdir -p %s' % localdir
 
     # create the rsync command
     rsync_cmd = '/usr/bin/rsync -%s %s %s' % (switch, remote, local)
@@ -66,7 +74,7 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     # now we run the commands
     # shell=True is used as the escaped characters would cause failures
     #p1 = subprocess.Popen(mkdir_cmd, shell=True).wait()
-    #p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
+    p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
 
     # for testing only
     print rsync_cmd
@@ -97,9 +105,9 @@ sw = cfg ['options']['switch']
 
 
 
-print ("remote dir = %s" )%(rd)
+#print ("remote dir = %s" )%(rd)
 
-do_rsync(rh, ru, str(rd), rf, ld, sw)
+#do_rsync(rh, ru, rd, rf, ld, sw)
 
 # Test details for moving files from shed_bot to Minty....
 #rh = "10.100.1.223"
@@ -109,8 +117,8 @@ do_rsync(rh, ru, str(rd), rf, ld, sw)
 #ld = "/Data/Music/X/"
 
 
-#print "Here we do a simple test with test.dat"
-#do_rsync(rh, ru, rd, rf, ld)
+print "Here we do a simple test with test.dat"
+do_rsync(rh, ru, rd, rf, ld, sw)
 
 #rf = "this is a filename - with (stuff) in it.dat"
 
