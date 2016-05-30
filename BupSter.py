@@ -11,7 +11,7 @@
 import subprocess
 import os
 import re
-
+import yaml
 
 def do_rsync(rh, ru, rd, rf, ld):
     # rh == remote host name or ip address
@@ -44,6 +44,9 @@ def do_rsync(rh, ru, rd, rf, ld):
     local = re.escape(local)
     localdir = re.escape(localdir)
 
+    # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
+    switch = "avz"
+
     # before issuing the rsync command, I've been running a mkdir command
     # Without this, if the directory did not exist, rsync would fail.
     # If the directory exists, then the mkdir command does nothing.
@@ -51,7 +54,7 @@ def do_rsync(rh, ru, rd, rf, ld):
     mkdir_cmd = '/bin/mkdir -p %s' % localdir
 
     # create the rsync command
-    rsync_cmd = '/usr/bin/rsync -va %s %s' % (remote, local)
+    rsync_cmd = '/usr/bin/rsync -%s %s %s' % (switch, remote, local)
 
     # now we run the commands
     # shell=True is used as the escaped characters would cause failures
@@ -59,6 +62,23 @@ def do_rsync(rh, ru, rd, rf, ld):
     p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
     print""
     return 0
+
+
+
+
+
+
+with open("docs/config.txt", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
+
+for section in cfg:
+    print(section)
+print(cfg['remote'])
+print(cfg['local'])
+print(cfg['options'])
+
+
+
 
 # Test details for moving files from shed_bot to Minty....
 rh = "10.100.1.223"
@@ -68,8 +88,8 @@ rf = "Live At The Stagedoor Tavern"
 ld = "/Data/Music/X/"
 
 
-print "Here we do a simple test with test.dat"
-do_rsync(rh, ru, rd, rf, ld)
+#print "Here we do a simple test with test.dat"
+#do_rsync(rh, ru, rd, rf, ld)
 
 #rf = "this is a filename - with (stuff) in it.dat"
 
