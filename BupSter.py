@@ -1,5 +1,8 @@
 #! /usr/bin/python
 
+#TODO add the ability to read configs from a file and then run the rsync
+#TODO add a GUI and script up the options that can be applied to rsync
+
 import subprocess
 import os
 import re
