@@ -13,6 +13,12 @@ import re
 
 
 def do_rsync(rh, ru, rd, rf, ld):
+    # rh == remote host name or ip address
+    # ru == remote user name
+    # rd == remote diretcory full path should be used
+    # rf == remote file if you want to move only one file
+    # ld == local directory, full path should be used
+
     # The full file path is the directory plus file.
     remote = os.path.join(rd, rf)
 
@@ -53,7 +59,7 @@ def do_rsync(rh, ru, rd, rf, ld):
     print""
     return 0
 
-
+# Test details for moving files from shed_bot to Minty....
 rh = "10.100.1.223"
 ru = "benc"
 rd = "/Volumes/DATA/iTunes Media/Music/X/"
@@ -67,8 +73,6 @@ do_rsync(rh, ru, rd, rf, ld)
 #rf = "this is a filename - with (stuff) in it.dat"
 
 
-#print "Here is a filename witha bit more character"
-#do_rsync(rh, ru, rd, rf, ld)
 
 
 exit()
