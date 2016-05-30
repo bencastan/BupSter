@@ -13,21 +13,24 @@ import os
 import re
 import yaml
 
-def do_rsync(rh, ru, rd, rf, ld):
+def do_rsync(rh, ru, rd, rf, ld, sw):
     # rh == remote host name or ip address
     # ru == remote user name
     # rd == remote diretcory full path should be used
     # rf == remote file if you want to move only one file
     # ld == local directory, full path should be used
+    print rd
 
     # The full file path is the directory plus file.
     remote = os.path.join(rd, rf)
-
+    print remote
     # escape all characters in the full file path
     remote = re.escape(remote)
+    print remote
 
     # format the remote location as 'username@hostname:'location'
     remote = "%s@%s:'%s'" % (ru, rh, remote)
+    print remote
 
     # define the desired full path of the new file
     local = os.path.join(ld, rf)
@@ -45,7 +48,11 @@ def do_rsync(rh, ru, rd, rf, ld):
     localdir = re.escape(localdir)
 
     # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
-    switch = "avz"
+    if sw == "":
+        switch = "avz"
+    else:
+        switch = sw
+
 
     # before issuing the rsync command, I've been running a mkdir command
     # Without this, if the directory did not exist, rsync would fail.
@@ -58,8 +65,11 @@ def do_rsync(rh, ru, rd, rf, ld):
 
     # now we run the commands
     # shell=True is used as the escaped characters would cause failures
-    p1 = subprocess.Popen(mkdir_cmd, shell=True).wait()
-    p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
+    #p1 = subprocess.Popen(mkdir_cmd, shell=True).wait()
+    #p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
+
+    # for testing only
+    print rsync_cmd
     print""
     return 0
 
@@ -71,21 +81,32 @@ def do_rsync(rh, ru, rd, rf, ld):
 with open("docs/config.txt", 'r') as ymlfile:
     cfg = yaml.load(ymlfile)
 
-for section in cfg:
-    print(section)
-print(cfg['remote'])
-print(cfg['local'])
-print(cfg['options'])
+#for section in cfg:
+#    print(section)
+#print(cfg['remote'])
+#print(cfg['local'])
+#print(cfg['options'])
+
+#for key in cfg['remote']: print (key)
+rh = cfg ['remote']['host']
+ru = cfg ['remote']['user']
+rd = cfg ['remote']['directory']
+rf = cfg ['remote']['file']
+ld = cfg ['local']['directory']
+sw = cfg ['options']['switch']
 
 
 
+print ("remote dir = %s" )%(rd)
+
+do_rsync(rh, ru, str(rd), rf, ld, sw)
 
 # Test details for moving files from shed_bot to Minty....
-rh = "10.100.1.223"
-ru = "benc"
-rd = "/Volumes/DATA/iTunes Media/Music/X/"
-rf = "Live At The Stagedoor Tavern"
-ld = "/Data/Music/X/"
+#rh = "10.100.1.223"
+#ru = "benc"
+#rd = "/Volumes/DATA/iTunes Media/Music/X/"
+#rf = "Live At The Stagedoor Tavern"
+#ld = "/Data/Music/X/"
 
 
 #print "Here we do a simple test with test.dat"

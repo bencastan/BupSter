@@ -1,0 +1,25 @@
+#Configuration file for running on multiple source directories
+
+
+
+# Test details for moving files from shed_bot to Minty....
+#rh = "10.100.1.223"
+#ru = "benc"
+#rd = "/Volumes/DATA/iTunes Media/Music/X/"
+#rf = "Live At The Stagedoor Tavern"
+#ld = "/Data/Music/X/"
+
+#sw = options acz
+
+
+remote:
+    host: 10.100.1.223
+    user: benc
+    directory: "/Volumes/DATA/iTunes Media/Music"
+    file: "/test"
+
+local:
+    directory: /Data/Music
+
+options:
+    switch: avz
