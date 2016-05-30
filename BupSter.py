@@ -3,6 +3,7 @@
 #TODO add the ability to read configs from a file and then run the rsync
 #TODO add a GUI and script up the options that can be applied to rsync
 #TODO add the ability to store passwords using a hash to hide the password??
+#TODO add logging and maybe email notifications
 
 # Stolen from https://ryanveach.com/233/calling-rsync-with-pythons-subprocess-module/
 
