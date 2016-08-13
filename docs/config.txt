@@ -9,17 +9,17 @@
 #rf = "Live At The Stagedoor Tavern"
 #ld = "/Data/Music/X/"
 
-#sw = options acz
+#sw = options aczvvv
 
 
 remote:
     host: 10.100.1.223
     user: benc
-    directory: /Volumes/DATA/iTunes Media/Music/
+    directory: /Volumes/DATA/iTunes Media/Movies/
     file: /
 
 local:
-    directory: /Data/Music/
+    directory: /Data/Movies/
 
 options:
-    switch: avz
+    switch: avzv --exclude-from=docs/ignore.txt
