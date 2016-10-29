@@ -15,11 +15,11 @@
 remote:
     host: 10.100.1.223
     user: benc
-    directory: /Volumes/DATA/iTunes Media/Movies/
+    directory: /Volumes/DATA/iTunes Media/
     file: /
 
 local:
-    directory: /Data/Movies/
+    directory: /Data/
 
 options:
     switch: avzv --exclude-from=docs/ignore.txt
