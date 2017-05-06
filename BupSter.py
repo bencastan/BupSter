@@ -60,7 +60,7 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
 
     # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
     if sw == "":
-        switch = "avz"
+        switch = "av"
     else:
         switch = sw
 
