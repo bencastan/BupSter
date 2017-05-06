@@ -51,9 +51,12 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     # Add it back
     localdir = "%s/" % localdir
 
+
     # escape all characters in the local filename / directory
     local = re.escape(local)
     localdir = re.escape(localdir)
+    assert isinstance(local, object)
+    print "local Dir=" + str(local)
 
     # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
     if sw == "":

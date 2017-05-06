@@ -5,7 +5,7 @@
 # Test details for moving files from shed_bot to Minty....
 #rh = "10.100.1.223"
 #ru = "benc"
-#rd = "/Volumes/DATA/iTunes Media/Music/X/"
+#rd = "/Volumes/Media/iTunes-Media/Music/X/"
 #rf = "Live At The Stagedoor Tavern"
 #ld = "/Data/Music/X/"
 
@@ -15,7 +15,7 @@
 remote:
     host: 10.100.1.223
     user: benc
-    directory: /Volumes/DATA/iTunes Media/
+    directory: /Volumes/Media/iTunes-Media/
     file: /
 
 local:
