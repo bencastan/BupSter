@@ -16,20 +16,16 @@ import yaml
 
 def show_header():
     print('##########################')
-    print('# Backup Media Store     #')
+    print('#   Backup Media Store   #')
     print('##########################')
 
 
 def do_rsync(rh, ru, rd, rf, ld, sw):
-    # rh == remote host name or ip address
-    # ru == remote user name
-    # rd == remote diretcory full path should be used
-    # rf == remote file if you want to move only one file
-    # ld == local directory, full path should be used
 
 
     # The full file path is the directory plus file.
-    # But if we dont wnat a file but the whole directory then we need to use a "/" int he config file and then ignore it
+    # But if we don't want a file but the whole directory then we need to use a "/"
+    # in the config file and then ignore it
     if not rf == "/":
         remote = os.path.join(rd, rf)
     else:
@@ -50,14 +46,13 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     else:
         local = ld
 
-    # This statement will provide the contaioning directory of the file
-    # this is usefull in case the file passed as rf contains a directory
+    # This statement will provide the containing directory of the file
+    # this is useful in case the file passed as rf contains a directory
     localdir = os.path.split(local)[0]
 
-    # os.path.split always returns a diretcory without the trailing /
+    # os.path.split always returns a directory without the trailing /
     # Add it back
     localdir = "%s/" % localdir
-
 
     # escape all characters in the local filename / directory
     local = re.escape(local)
@@ -65,70 +60,59 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     assert isinstance(local, object)
     print("Destination directory is {}".format(str(local)))
 
-    # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
+    # rsync options switch by default use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
     if sw == "":
         switch = "av"
     else:
         switch = sw
 
-
     # before issuing the rsync command, I've been running a mkdir command
     # Without this, if the directory did not exist, rsync would fail.
     # If the directory exists, then the mkdir command does nothing.
     # If you are copying the file to the remote directory, the mkdir command can be passed by ssh
-    #mkdir_cmd = '/bin/mkdir -p %s' % localdir
+    mkdir_cmd = '/bin/mkdir -p %s' % localdir
 
     # create the rsync command
     rsync_cmd = '/usr/bin/rsync -%s %s %s' % (switch, remote, local)
     print("The command to be run is {}".format(rsync_cmd))
     # now we run the commands
     # shell=True is used as the escaped characters would cause failures
-    #p1 = subprocess.Popen(mkdir_cmd, shell=True).wait()
-    p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
+    # p1 = subprocess.Popen(mkdir_cmd, shell=True).wait()
+    try:
+        subprocess.Popen(rsync_cmd, shell =True).wait()
+    except ValueError:
+        print('Opps! something is worng at the remote end')
 
+def get_options():
+    with open("docs/config.txt", 'r') as ymlfile:
+        cfg = yaml.load(ymlfile)
+        # rh == remote host name or ip address
+        # ru == remote user name
+        # rd == remote directory full path should be used
+        # rf == remote file if you want to move only one file
+        # ld == local directory, full path should be used
+        # md == The media files to copy
+        rh = cfg['remote']['host']
+        ru = cfg['remote']['user']
+        rd = cfg['remote']['directory']
+        rf = cfg['remote']['file']
+        ld = cfg['local']['directory']
+        sw = cfg['options']['switch']
+        md = cfg['remote']['Media']
 
-
-
-
-
-
-with open("docs/config.txt", 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
-
-#for section in cfg:
-#    print(section)
-#print(cfg['remote'])
-#print(cfg['local'])
-#print(cfg['options'])
-
-#for key in cfg['remote']: print (key)
-rh = cfg ['remote']['host']
-ru = cfg ['remote']['user']
-rd = cfg ['remote']['directory']
-rf = cfg ['remote']['file']
-ld = cfg ['local']['directory']
-sw = cfg ['options']['switch']
-
-dirs= ['Music', 'Movies']
-
-#print ("remote dir = %s" )%(rd)
-
-#do_rsync(rh, ru, rd, rf, ld, sw)
-
-# Test details for moving files from shed_bot to Minty....
-#rh = "10.100.1.223"
-#ru = "benc"
-#rd = "/Volumes/DATA/iTunes Media/Music/X/"
-#rf = "Live At The Stagedoor Tavern"
-#ld = "/Data/Music/X/"
+        return{'optrh':rh, 'optru':ru, 'optrd':rd, 'optrf':rf, 'optld':ld,'optsw':sw, 'optmd':md}
 
 
 if __name__ == '__main__':
     show_header()
+    options= get_options()
+    # Dirs to rsync
+    dirs = (options['optmd'])
+    #  dirs = ['Music', 'Movies']
     for rrd in dirs:
-        do_rsync(rh, ru, rd + rrd, rf, ld, sw)
+        options = get_options()
+        do_rsync(options['optrh'],options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'], options['optsw'])
 
-    #rf = "this is a filename - with (stuff) in it.dat"
 
 
 
