@@ -15,11 +15,11 @@
 remote:
     host: 10.100.1.223
     user: benc
-    directory: /Volumes/DATA/iTunes Media/Music/
+    directory: /Volumes/Media/iTunes-Media/
     file: /
 
 local:
-    directory: /Data/Music/
+    directory: /Data/Music
 
 options:
     switch: avz

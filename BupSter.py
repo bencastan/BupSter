@@ -51,13 +51,16 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     # Add it back
     localdir = "%s/" % localdir
 
+
     # escape all characters in the local filename / directory
     local = re.escape(local)
     localdir = re.escape(localdir)
+    assert isinstance(local, object)
+    print "local Dir=" + str(local)
 
     # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
     if sw == "":
-        switch = "avz"
+        switch = "av"
     else:
         switch = sw
 
@@ -103,7 +106,7 @@ rf = cfg ['remote']['file']
 ld = cfg ['local']['directory']
 sw = cfg ['options']['switch']
 
-
+dirs= ['Music', 'Movies']
 
 #print ("remote dir = %s" )%(rd)
 
@@ -118,7 +121,8 @@ sw = cfg ['options']['switch']
 
 
 print "Here we do a simple test with test.dat"
-do_rsync(rh, ru, rd, rf, ld, sw)
+for rrd in dirs:
+    do_rsync(rh, ru, rd + rrd, rf, ld, sw)
 
 #rf = "this is a filename - with (stuff) in it.dat"
 
@@ -126,4 +130,3 @@ do_rsync(rh, ru, rd, rf, ld, sw)
 
 
 exit()
-
