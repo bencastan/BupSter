@@ -7,7 +7,6 @@
 
 # Stolen from https://ryanveach.com/233/calling-rsync-with-pythons-subprocess-module/
 
-
 import subprocess
 import os
 import re
@@ -22,7 +21,6 @@ def show_header():
 
 def do_rsync(rh, ru, rd, rf, ld, sw):
 
-
     # The full file path is the directory plus file.
     # But if we don't want a file but the whole directory then we need to use a "/"
     # in the config file and then ignore it
@@ -30,10 +28,10 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
         remote = os.path.join(rd, rf)
     else:
         remote = rd
-    #print remote
+    # print remote
     # escape all characters in the full file path
     remote = re.escape(remote)
-    #print remote
+    # print remote
 
     # format the remote location as 'username@hostname:'location'
     remote = "%s@%s:'%s'" % (ru, rh, remote)
@@ -81,17 +79,18 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     try:
         subprocess.Popen(rsync_cmd, shell =True).wait()
     except ValueError:
-        print('Opps! something is worng at the remote end')
+        print('Opps! something is wrong at the remote end')
+
 
 def get_options():
     with open("docs/config.txt", 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
         # rh == remote host name or ip address
         # ru == remote user name
         # rd == remote directory full path should be used
         # rf == remote file if you want to move only one file
         # ld == local directory, full path should be used
-        # md == The media files to copy
+        # md == The media files to copy i.e. the directory to copy the files from.
+        cfg = yaml.load(ymlfile)
         rh = cfg['remote']['host']
         ru = cfg['remote']['user']
         rd = cfg['remote']['directory']
@@ -109,4 +108,5 @@ if __name__ == '__main__':
     # Dirs to rsync
     dirs = (options['optmd'])
     for rrd in dirs:
-        do_rsync(options['optrh'],options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'], options['optsw'])
+        do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'],
+                         options['optsw'])
