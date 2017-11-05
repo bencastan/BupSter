@@ -7,7 +7,7 @@
 #ru = "benc"
 #rd = "/Volumes/DATA/iTunes Media/Music/X/"
 #rf = "Live At The Stagedoor Tavern"
-#ld = "/Data/Music/X/"
+#ld = "/Data/"
 
 #sw = options acz
 
@@ -17,9 +17,10 @@ remote:
     user: benc
     directory: /Volumes/Media/iTunes-Media/
     file: /
+    Media: ['Music', 'Videos']
 
 local:
-    directory: /Data/Music
+    directory: /Data/
 
 options:
     switch: avz
