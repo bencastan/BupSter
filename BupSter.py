@@ -13,6 +13,13 @@ import os
 import re
 import yaml
 
+
+def show_header():
+    print('##########################')
+    print('# Backup Media Store     #')
+    print('##########################')
+
+
 def do_rsync(rh, ru, rd, rf, ld, sw):
     # rh == remote host name or ip address
     # ru == remote user name
@@ -27,14 +34,14 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
         remote = os.path.join(rd, rf)
     else:
         remote = rd
-    print remote
+    #print remote
     # escape all characters in the full file path
     remote = re.escape(remote)
-    print remote
+    #print remote
 
     # format the remote location as 'username@hostname:'location'
     remote = "%s@%s:'%s'" % (ru, rh, remote)
-    print remote
+    print("Source directory is {}".format(remote))
 
     # define the desired full path of the new file
     # Again caught out by the behaviour of the "/" in os.path.join
@@ -56,7 +63,7 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
     local = re.escape(local)
     localdir = re.escape(localdir)
     assert isinstance(local, object)
-    print "local Dir=" + str(local)
+    print("Destination directory is {}".format(str(local)))
 
     # rsync options switch by defualt use -avz 'Archive (archive mode; same as -rlptgoD (no -H)), verbose, compression'
     if sw == "":
@@ -73,16 +80,12 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
 
     # create the rsync command
     rsync_cmd = '/usr/bin/rsync -%s %s %s' % (switch, remote, local)
-
+    print("The command to be run is {}".format(rsync_cmd))
     # now we run the commands
     # shell=True is used as the escaped characters would cause failures
     #p1 = subprocess.Popen(mkdir_cmd, shell=True).wait()
     p2 = subprocess.Popen(rsync_cmd, shell =True).wait()
 
-    # for testing only
-    print rsync_cmd
-    print""
-    return 0
 
 
 
@@ -120,13 +123,13 @@ dirs= ['Music', 'Movies']
 #ld = "/Data/Music/X/"
 
 
-print "Here we do a simple test with test.dat"
-for rrd in dirs:
-    do_rsync(rh, ru, rd + rrd, rf, ld, sw)
+if __name__ == '__main__':
+    show_header()
+    for rrd in dirs:
+        do_rsync(rh, ru, rd + rrd, rf, ld, sw)
 
-#rf = "this is a filename - with (stuff) in it.dat"
+    #rf = "this is a filename - with (stuff) in it.dat"
 
 
 
 
-exit()
