@@ -108,12 +108,5 @@ if __name__ == '__main__':
     options= get_options()
     # Dirs to rsync
     dirs = (options['optmd'])
-    #  dirs = ['Music', 'Movies']
     for rrd in dirs:
-        options = get_options()
         do_rsync(options['optrh'],options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'], options['optsw'])
-
-
-
-
-
