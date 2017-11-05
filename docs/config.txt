@@ -17,7 +17,7 @@ remote:
     user: benc
     directory: /Volumes/Media/iTunes-Media/
     file: /
-    Media: ['Music', 'Videos']
+    Media: ['Music', 'Movies']
 
 local:
     directory: /Data/
