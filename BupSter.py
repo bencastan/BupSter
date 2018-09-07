@@ -116,4 +116,4 @@ if __name__ == '__main__':
         #         options['optsw'])
 
         print("Month {}".format(Utils.Times.get_monthDecimal()))
-        print("Year: {}".format(Utils.Times.get_yearDecimal()))
+        print("Year: {}".format(Utils.Times.get_yearDecimal))
