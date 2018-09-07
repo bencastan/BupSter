@@ -11,6 +11,7 @@ import subprocess
 import os
 import re
 import yaml
+import Utils
 
 
 def show_header():
@@ -105,11 +106,14 @@ def get_options():
 
 
 if __name__ == '__main__':
-    show_header()
-    options= get_options()
+    #show_header()
+    #options= get_options()
     # Dirs to rsync
-    dirs = (options['optmd'])
-    for rrd in dirs:
-        do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'], options['optsw'])
+    #dirs = (options['optmd'])
+    #for rrd in dirs:
+    #    do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'], options['optsw'])
         #do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optld'],
         #         options['optsw'])
+
+        print("Month {}".format(Utils.Times.get_monthDecimal()))
+        print("Year: {}".format(Utils.Times.get_yearDecimal()))
