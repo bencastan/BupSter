@@ -19,15 +19,16 @@ def show_header():
     print('##########################')
 
 
-def do_rsync(rh, ru, rd, rf, ld, sw):
+def do_rsync(rh, ru, rd, ld, sw, rf=None):
 
     # The full file path is the directory plus file.
     # But if we don't want a file but the whole directory then we need to use a "/"
     # in the config file and then ignore it
-    if not rf == "/":
-        remote = os.path.join(rd, rf)
-    else:
-        remote = rd
+    if rf is not None:
+        if not rf == "/":
+            remote = os.path.join(rd, rf)
+        else:
+            remote = rd
     # print remote
     # escape all characters in the full file path
     remote = re.escape(remote)
@@ -39,10 +40,11 @@ def do_rsync(rh, ru, rd, rf, ld, sw):
 
     # define the desired full path of the new file
     # Again caught out by the behaviour of the "/" in os.path.join
-    if not rf == "/":
-        local = os.path.join(ld, rf)
-    else:
-        local = ld
+    if rf is not None:
+        if not rf == "/":
+            local = os.path.join(ld, rf)
+        else:
+            local = ld
 
     # This statement will provide the containing directory of the file
     # this is useful in case the file passed as rf contains a directory
@@ -108,5 +110,6 @@ if __name__ == '__main__':
     # Dirs to rsync
     dirs = (options['optmd'])
     for rrd in dirs:
-        do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'],
-                         options['optsw'])
+        do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optrf'], options['optld'], options['optsw'])
+        #do_rsync(options['optrh'], options['optru'], options['optrd'] + rrd, options['optld'],
+        #         options['optsw'])
