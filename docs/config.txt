@@ -9,12 +9,13 @@
 #rf = "Live At The Stagedoor Tavern"
 #ld = "/Data/"
 
+
 #sw = options acz
 
 
 remote:
-    host: 10.100.1.168
-    user: benc
+    host:
+    user:
     directory: /
     file:
     Media: ['music', 'video']
