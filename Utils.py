@@ -7,6 +7,7 @@ class Times():
         # Returns the current month as a decimal number i.e. 09
         return strftime("%m")
 
+    @property
     def get_yearDecimal():
         # Returns the year with century as a decimal number
         return strftime("%Y")
